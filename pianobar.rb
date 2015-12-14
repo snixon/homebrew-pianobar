@@ -1,12 +1,16 @@
-# Homebrew Formula for pianobar
-
-require "formula"
-
 class Pianobar < Formula
+  desc "Command-line player for https://pandora.com"
   homepage "https://github.com/PromyLOPh/pianobar/"
-  url "https://github.com/PromyLOPh/pianobar/archive/2014.06.08.tar.gz"
-  sha256 "55f0105b8bf20af0a74f3ef2f928e81d9fdccc50fe86548f7db7992f523c3529"
+  url "https://6xq.net/pianobar/pianobar-2015.11.22.tar.bz2"
+  sha256 "23fbc9e6f55b3277dba7a0f68ff721bad7f1eeea504c616ba008841686de322b"
   head "https://github.com/PromyLOPh/pianobar.git"
+
+  bottle do
+    cellar :any
+    sha256 "af31da8a1c37f0c8a96cb3ac0dc77729273876c9fbf297b3ad8bac760c5c5a93" => :el_capitan
+    sha256 "9391c326669a36450344beaf238585882694bd302fff41fbb3ce70bd3061090f" => :yosemite
+    sha256 "c9173c98d827a8ab01faefe581512cb19ff27d6a01ec2356db00ce3a9e21e028" => :mavericks
+  end
 
   depends_on "pkg-config" => :build
   depends_on "libao"
@@ -21,13 +25,8 @@ class Pianobar < Formula
     build 2334
     cause "Reports of this not compiling on Xcode 4"
   end
-
-  # Fixes segfault in JSON response parser; fixed upstream, will be in next release
-  patch do
-    url "https://github.com/PromyLOPh/pianobar/commit/597b2ec46a3708d50ab9620d5bb4fdbd19cf8a6c.diff"
-    sha1 "d1a6215e72aeb95a77892898110d79e3737e3ba1"
-  end
-  # Should add audioUrl in as an eventcmd option
+  
+# Should add audioUrl in as an eventcmd option
   patch do
     url "https://github.com/snixon/pianobar/commit/7cd1bf083c8963e0e04e7e3af7f8e37e2d818cf9.diff"
     sha1 "741fda9dcf7eccee8b026b95000be0f9bf8a39a2"
@@ -35,7 +34,7 @@ class Pianobar < Formula
 
   def install
     # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
-    ENV['CFLAGS'] = "-O2 -DNDEBUG " +
+    ENV["CFLAGS"] = "-O2 -DNDEBUG " +
                     # Or it doesn't build at all
                     "-std=c99 " +
                     # build if we aren't /usr/local'
